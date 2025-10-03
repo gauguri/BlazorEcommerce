@@ -9,7 +9,7 @@
 }
 else
 {
-    @{ var featuredProducts = ProductService.Products.Where(p => p.Featured).ToList(); }
+    var featuredProducts = ProductService.Products.Where(p => p.Featured).ToList();
     if (featuredProducts.Count == 0)
     {
         <section class="featured-wrapper surface">
@@ -18,7 +18,7 @@ else
     }
     else
     {
-        @{ var heroProduct = featuredProducts.First(); }
+        var heroProduct = featuredProducts.First();
         <section class="hero-banner">
             <div class="hero-content">
                 <span class="pill">New arrivals</span>
