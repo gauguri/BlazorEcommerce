@@ -1,42 +1,81 @@
 ﻿@inject IProductService ProductService
 @implements IDisposable
 
-<center><h2>Top Products of Today</h2></center>
 @if (ProductService.Products == null || ProductService.Products.Count == 0)
 {
-    <span>@ProductService.Message</span>
+    <section class="featured-wrapper surface">
+        <span>@ProductService.Message</span>
+    </section>
 }
 else
 {
-    <div class="container">
-        @foreach (var product in ProductService.Products)
-        {
-            @if (product.Featured)
-            {
-                <div class="featured-product">
-                    <div>
-                        <a href="product/@product.Id">
-                            @if (!string.IsNullOrEmpty(product.ImageUrl))
+    @{ var featuredProducts = ProductService.Products.Where(p => p.Featured).ToList(); }
+    if (featuredProducts.Count == 0)
+    {
+        <section class="featured-wrapper surface">
+            <span class="muted-text">Fresh products are being curated. Check back soon!</span>
+        </section>
+    }
+    else
+    {
+        @{ var heroProduct = featuredProducts.First(); }
+        <section class="hero-banner">
+            <div class="hero-content">
+                <span class="pill">New arrivals</span>
+                <h1>Design-led storage, crafted for modern spaces.</h1>
+                <p>Discover modular crates, shelves, and accessories engineered to flex with your workflow. Built to endure, designed to inspire.</p>
+                <a class="btn btn-primary" href="product/@heroProduct.Id">Shop featured</a>
+            </div>
+            <div class="hero-image">
+                @if (!string.IsNullOrEmpty(GetProductImage(heroProduct)))
+                {
+                    <img src="@GetProductImage(heroProduct)" alt="@heroProduct.Title" />
+                }
+                else
+                {
+                    <div class="hero-placeholder">
+                        <span>@heroProduct.Title</span>
+                    </div>
+                }
+            </div>
+        </section>
+        <section class="featured-wrapper">
+            <div class="section-header">
+                <div>
+                    <span class="pill">Featured best sellers</span>
+                    <h2>Daily standouts chosen by pros</h2>
+                </div>
+                <p>Explore industrial-grade materials paired with refined finishes. Every piece is curated to elevate storage in studios, warehouses, and homes alike.</p>
+            </div>
+            <div class="featured-grid">
+                @foreach (var product in featuredProducts)
+                {
+                    <article class="featured-card">
+                        <a href="product/@product.Id" class="image-wrapper">
+                            @if (!string.IsNullOrEmpty(GetProductImage(product)))
                             {
-                                <img src="@product.ImageUrl">
+                                <img src="@GetProductImage(product)" alt="@product.Title" />
                             }
-                            else if (product.Images.Count > 0)
+                            else
                             {
-                                <img src="@product.Images[0].Data" />
+                                <div class="image-placeholder">@product.Title</div>
                             }
                         </a>
-                    </div>
-                    <h4><a href="product/@product.Id">@product.Title</a></h4>
-                    @if (product.Variants != null && product.Variants.Count > 0)
-                    {
-                        <h5 class="price">
-                            $@product.Variants[0].Price
-                        </h5>
-                    }
-                </div>
-            }
-        }
-    </div>
+                        <div class="card-body">
+                            <a href="product/@product.Id">
+                                <h3>@product.Title</h3>
+                            </a>
+                            <p>@product.Description</p>
+                            @if (product.Variants != null && product.Variants.Count > 0)
+                            {
+                                <span class="price">$@product.Variants[0].Price</span>
+                            }
+                        </div>
+                    </article>
+                }
+            </div>
+        </section>
+    }
 }
 
 @code {
@@ -48,5 +87,18 @@ else
     public void Dispose()
     {
         ProductService.ProductsChanged -= StateHasChanged;
+    }
+
+    private string GetProductImage(Product product)
+    {
+        if (!string.IsNullOrEmpty(product.ImageUrl))
+        {
+            return product.ImageUrl;
+        }
+        if (product.Images != null && product.Images.Count > 0)
+        {
+            return product.Images[0].Data;
+        }
+        return string.Empty;
     }
 }

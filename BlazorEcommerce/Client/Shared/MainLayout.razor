@@ -1,16 +1,18 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            <Search />
+<div class="layout-shell">
+    <header class="layout-header">
+        <div class="header-bar glass-panel">
+            <a class="brand" href="">Milkcrate Collective</a>
+            <div class="header-search">
+                <Search />
+            </div>
         </div>
+        <NavMenu />
+    </header>
 
-        <article class="content px-4">
+    <main class="layout-main">
+        <article class="content surface">
             @Body
         </article>
     </main>

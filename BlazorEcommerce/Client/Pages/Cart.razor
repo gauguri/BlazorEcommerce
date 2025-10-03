@@ -14,10 +14,10 @@
 }
 else
 {
-    <div>
+    <div class="cart-items">
         @foreach (var product in cartProducts)
         {
-            <div class="container">
+            <div class="cart-line">
                 <div class="image-wrapper">
                     <img src="@product.ImageUrl" class="image" />
                 </div>
@@ -36,7 +36,7 @@ else
                 <div class="cart-product-price">$@(product.Price * product.Quantity)</div>
             </div>
         }
-        <div class="cart-product-price">
+        <div class="cart-total">
             Total (@cartProducts.Count): $@cartProducts.Sum(product => @product.Price * product.Quantity)
         </div>
     </div>
