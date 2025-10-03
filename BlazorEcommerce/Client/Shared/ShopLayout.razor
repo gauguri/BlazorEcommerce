@@ -1,24 +1,34 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <main>
-        <div class="top-row px-2">
+<div class="shop-shell">
+    <header class="shop-header glass-panel">
+        <div class="shop-branding">
             <HomeButton />
+            <div class="brand-copy">
+                <a class="shop-logo" href="">Milkcrate Direct</a>
+                <span class="tagline">Premium storage & organization essentials</span>
+            </div>
+        </div>
+        <div class="shop-search">
             <Search />
+        </div>
+        <div class="shop-actions">
             <UserButton />
             <CartCounter />
         </div>
+    </header>
 
-        <div class="nav-menu">
-            <ShopNavMenu />
-        </div>
+    <div class="shop-navigation">
+        <ShopNavMenu />
+    </div>
 
-        <article class="content px-2">
+    <main class="shop-main">
+        <article class="content surface">
             @Body
         </article>
     </main>
 </div>
 
-<MudThemeProvider/>
-<MudDialogProvider/>
-<MudSnackbarProvider/>
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />

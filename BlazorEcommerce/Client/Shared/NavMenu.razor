@@ -1,40 +1,37 @@
 ﻿@inject ICategoryService CategoryService
 
-<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">BlazorEcommerce</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
+<nav class="nav-shell surface">
+    <div class="nav-bar">
+        <h2 class="nav-heading">Shop the collection</h2>
+        <button class="menu-toggle" @onclick="ToggleNavMenu">
+            <span class="oi oi-menu"></span>
+            <span>@(collapseNavMenu ? "Browse" : "Close")</span>
         </button>
     </div>
-</div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                Home
-            </NavLink>
-        </div>
+    <ul class="nav-links @(collapseNavMenu ? string.Empty : "open")">
+        <li class="nav-item">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All" @onclick="CloseMenu">Home</NavLink>
+        </li>
         @foreach (var category in CategoryService.Categories)
         {
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="@category.Url">
-                    @category.Name
-                </NavLink>
-            </div>
+            <li class="nav-item">
+                <NavLink class="nav-link" href="@category.Url" @onclick="CloseMenu">@category.Name</NavLink>
+            </li>
         }
-    </nav>
-</div>
+    </ul>
+</nav>
 
 @code {
     private bool collapseNavMenu = true;
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void CloseMenu()
+    {
+        collapseNavMenu = true;
     }
 
     protected override async Task OnInitializedAsync()

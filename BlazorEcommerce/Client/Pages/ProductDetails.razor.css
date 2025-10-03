@@ -1,31 +1,82 @@
-﻿.media-img {
-    max-height: 500px;
-    max-width: 500px;
-    border-radius: 6px;
-    margin: 0 10px 10px 10px;
+.media {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1fr);
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: start;
 }
 
 .media-img-wrapper {
-    max-width: 500px;
-    max-height: 500px;
-    text-align: center;
+    background: linear-gradient(180deg, rgba(37, 99, 235, 0.1) 0%, rgba(15, 23, 42, 0.08) 100%);
+    border-radius: calc(var(--radius-lg));
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    box-shadow: 0 28px 52px rgba(15, 23, 42, 0.18);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.original-price {
-    text-decoration: line-through;
+.media-img {
+    max-width: min(100%, 520px);
+    max-height: 520px;
+    border-radius: calc(var(--radius-lg) - 6px);
+    object-fit: cover;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
 }
 
-@media (max-width: 1023.98px) {
+.media-body {
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.75rem, 3vw, 2.75rem);
+    box-shadow: 0 22px 42px rgba(15, 23, 42, 0.12);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.media-body h2 {
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.media-body p {
+    color: var(--color-muted);
+    line-height: 1.75;
+}
+
+.form-select {
+    width: 100%;
+    border-radius: 999px;
+    border: 1px solid rgba(37, 99, 235, 0.25);
+    padding: 0.65rem 1.1rem;
+    font-size: 1rem;
+}
+
+.price {
+    font-size: clamp(1.4rem, 3vw, 1.8rem);
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+.btn-primary {
+    margin-top: 1.2rem;
+    width: fit-content;
+}
+
+@media (max-width: 960px) {
     .media {
-        flex-direction: column;
+        grid-template-columns: 1fr;
     }
 
-    .media-img {
-        max-width: 300px;
+    .media-body {
+        order: 2;
     }
 
     .media-img-wrapper {
-        width: 100%;
-        height: auto;
+        order: 1;
+    }
+}
+
+@media (max-width: 600px) {
+    .media-img {
+        max-height: 340px;
     }
 }

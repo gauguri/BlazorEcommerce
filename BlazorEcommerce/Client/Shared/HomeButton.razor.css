@@ -1,5 +1,27 @@
-﻿.home-button {
-    white-space: nowrap;
-    margin-right: 10px;
-    transform: rotate(-5deg);
+.home-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.65rem 1.4rem;
+    border-radius: 999px;
+    border: none;
+    background: rgba(37, 99, 235, 0.12);
+    color: var(--color-primary);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: var(--transition-base);
+    cursor: pointer;
+}
+
+.home-button:hover {
+    background: rgba(37, 99, 235, 0.22);
+    transform: translateY(-1px);
+}
+
+.accent-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
 }

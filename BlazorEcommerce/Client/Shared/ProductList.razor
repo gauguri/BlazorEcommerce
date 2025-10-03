@@ -3,45 +3,58 @@
 
 @if (ProductService.Products == null || ProductService.Products.Count == 0)
 {
-    <span>@ProductService.Message</span>
+    <div class="empty-state surface">
+        <span>@ProductService.Message</span>
+    </div>
 }
 else
 {
-    <ul class="list-unstyled">
-        @foreach (var product in ProductService.Products)
+    <section class="catalog">
+        <header class="catalog-header">
+            <div>
+                <span class="pill">@ProductService.Products.Count products</span>
+                <h2>Curated for modern storage needs</h2>
+            </div>
+            <p class="muted-text">Every piece is engineered to blend industrial strength with studio-grade design. Scroll through the full assortment and find your next hero product.</p>
+        </header>
+        <div class="product-grid">
+            @foreach (var product in ProductService.Products)
+            {
+                <article class="product-card">
+                    <a href="/product/@product.Id" class="card-image">
+                        @if (!string.IsNullOrEmpty(GetProductImage(product)))
+                        {
+                            <img src="@GetProductImage(product)" alt="@product.Title" />
+                        }
+                        else
+                        {
+                            <div class="image-placeholder">@product.Title</div>
+                        }
+                    </a>
+                    <div class="card-info">
+                        <a href="/product/@product.Id">
+                            <h3>@product.Title</h3>
+                        </a>
+                        <p>@product.Description</p>
+                        <div class="card-footer">
+                            <span class="price">@GetPriceText(product)</span>
+                            <a class="btn btn-outline-primary" href="/product/@product.Id">View details</a>
+                        </div>
+                    </div>
+                </article>
+            }
+        </div>
+        @if (ProductService.PageCount > 1)
         {
-            <li class="media my-3">
-                <div class="media-img-wrapper mr-2">
-                    <a href="/product/@product.Id">
-                        @if (!string.IsNullOrEmpty(product.ImageUrl))
-                        {
-                            <img class="media-img" src="@product.ImageUrl" alt="@product.Title" />
-                        }
-                        else if (product.Images.Count > 0)
-                        {
-                            <img class="media-img" src="@product.Images[0].Data" alt="@product.Title" />
-                        }
-                    </a>
-                </div>
-                <div class="media-body">
-                    <a href="/product/@product.Id">
-                        <h4 class="mb-0">@product.Title</h4>
-                    </a>
-                    <p>@product.Description</p>
-                    <h5 class="price">
-                        @GetPriceText(product)
-                    </h5>
-                </div>
-            </li>
+            <div class="pagination">
+                @for (var i = 1; i <= ProductService.PageCount; i++)
+                {
+                    <a class="page-pill @(i == ProductService.CurrentPage ? "active" : string.Empty)"
+                       href="/search/@ProductService.LastSearchText/@i">@i</a>
+                }
+            </div>
         }
-    </ul>
-    for (var i = 1; i <= ProductService.PageCount; i++)
-    {
-        <a class="btn
-                 @(i == ProductService.CurrentPage ? "btn-info" : "btn-outline-info")
-                 page-selection"
-   href="/search/@ProductService.LastSearchText/@i">@i</a>
-    }
+    </section>
 }
 
 @code {
@@ -53,6 +66,21 @@ else
     public void Dispose()
     {
         ProductService.ProductsChanged -= StateHasChanged;
+    }
+
+    private string GetProductImage(Product product)
+    {
+        if (!string.IsNullOrEmpty(product.ImageUrl))
+        {
+            return product.ImageUrl;
+        }
+
+        if (product.Images != null && product.Images.Count > 0)
+        {
+            return product.Images[0].Data;
+        }
+
+        return string.Empty;
     }
 
     private string GetPriceText(Product product)
